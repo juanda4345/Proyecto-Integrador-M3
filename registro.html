@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear cuenta - ESD</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <main class="pantalla-login">
+      <section class="tarjeta-login" aria-labelledby="tituloRegistro">
+        <img src="img/logo-esd.png" alt="Logo ESD" class="logo" />
+        <h1 id="tituloRegistro">Crear cuenta</h1>
+        <p>Regístrate para ingresar al espacio de estudio digital.</p>
+        <form id="formularioRegistro">
+          <label for="nombre">Nombre</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            autocomplete="name"
+            maxlength="60"
+            required
+          />
+          <label for="usuarioRegistro">Usuario</label>
+          <input
+            id="usuarioRegistro"
+            name="usuario"
+            type="text"
+            autocomplete="username"
+            minlength="3"
+            maxlength="30"
+            required
+          />
+          <label for="contrasenaRegistro">Contraseña</label>
+          <input
+            id="contrasenaRegistro"
+            name="contrasena"
+            type="password"
+            autocomplete="new-password"
+            minlength="4"
+            required
+          />
+          <label for="confirmarContrasena">Confirmar contraseña</label>
+          <input
+            id="confirmarContrasena"
+            name="confirmarContrasena"
+            type="password"
+            autocomplete="new-password"
+            minlength="4"
+            required
+          />
+          <p id="mensajeRegistro" class="mensaje" role="status" aria-live="polite"></p>
+          <button type="submit" class="boton boton-azul">Crear cuenta</button>
+        </form>
+        <p class="ayuda"><a href="login.html">Ya tengo una cuenta</a></p>
+      </section>
+    </main>
+    <script src="js/registro.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ingresar - ESD</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <main class="pantalla-login">
+      <section class="tarjeta-login" aria-labelledby="tituloLogin">
+        <img src="img/logo-esd.png" alt="Logo ESD" class="logo" />
+        <h1 id="tituloLogin">Iniciar sesión</h1>
+        <p>Ingresa para consultar las notas.</p>
+        <form id="formularioLogin">
+          <label for="usuario">Usuario</label
+          ><input id="usuario" name="usuario" type="text" autocomplete="username" required />
+          <label for="contrasena">Contraseña</label
+          ><input
+            id="contrasena"
+            name="contrasena"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          <p id="mensajeLogin" class="mensaje" role="status" aria-live="polite"></p>
+          <button type="submit" class="boton boton-azul">Ingresar</button>
+        </form>
+        <p class="ayuda">Usuario de prueba: admin<br />Contraseña: 1234</p>
+        <p class="ayuda">¿No tienes una cuenta? <a href="registro.html">Crear cuenta</a></p>
+      </section>
+    </main>
+    <script src="js/login.js" defer></script>
+  </body>
+</html>

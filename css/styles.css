@@ -1,4 +1,3 @@
-/* Reglas generales */
 * {
   box-sizing: border-box;
 }
@@ -29,7 +28,6 @@ p {
   margin-top: 0;
 }
 
-/* Inicio de sesión */
 .pantalla-login {
   min-height: 100vh;
   display: flex;
@@ -97,7 +95,6 @@ input:focus {
   font-size: 13px;
 }
 
-/* Botones */
 .boton {
   padding: 10px 14px;
   border: 0;
@@ -129,7 +126,6 @@ input:focus {
   background: none;
 }
 
-/* Encabezado y navegación */
 .encabezado {
   display: flex;
   align-items: center;
@@ -196,7 +192,6 @@ main {
   display: none !important;
 }
 
-/* Inicio y resumen */
 .bienvenida {
   padding: 28px;
   border-radius: 8px;
@@ -286,7 +281,6 @@ th {
   font-size: 13px;
 }
 
-/* Formulario y acciones de las notas */
 .campos {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -323,7 +317,6 @@ th {
   background: #fdebed;
 }
 
-/* Contacto y pie de página */
 .contacto {
   max-width: 600px;
   line-height: 1.6;
@@ -337,7 +330,6 @@ footer {
   font-size: 13px;
 }
 
-/* Ajustes para celulares y tabletas */
 @media (max-width: 750px) {
   .encabezado {
     flex-wrap: wrap;
