@@ -10,7 +10,6 @@ async function cargarNotasIniciales() {
     if (!respuesta.ok) throw new Error("No fue posible cargar notas.json");
     const datosIniciales = await respuesta.json();
     if (!(datosIniciales instanceof Array)) throw new Error("El archivo notas.json no contiene una lista de notas");
-
     const datosGuardados = localStorage.getItem(claveNotas);
     if (datosGuardados !== null) {
       try {
