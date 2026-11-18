@@ -1,49 +1,71 @@
 # ESD — Proyecto Integrador FrontEnd, Momento 3
 
-## Descripción
+ESD es una aplicación académica para gestionar calificaciones de estudiantes. Incluye inicio, registro e inicio de sesión, un resumen de notas y operaciones para registrar, consultar, buscar, editar y eliminar calificaciones.
 
-ESD (Espacio de Estudio Digital) es una aplicación académica para registrar y consultar las calificaciones de estudiantes. Este repositorio contiene la interfaz web del proyecto.
+## Requisitos
 
-## Funciones
+- Git para clonar el repositorio.
+- Python 3 para iniciar un servidor local, o Visual Studio Code con la extensión Live Server.
+- Un navegador moderno.
 
-- Crear una cuenta e iniciar sesión.
-- Registrar, consultar, buscar, editar y eliminar notas.
-- Calcular el promedio de tres notas y mostrar si el estudiante aprobó.
-- Consultar el total de registros, el promedio general y los estudiantes aprobados.
-- Guardar cuentas y notas en el navegador mediante `localStorage`.
+No se requiere `npm install`, base de datos ni servidor backend. La aplicación usa HTML, CSS y JavaScript sin dependencias externas.
 
-Las notas deben estar entre 1.0 y 5.0. Se aprueba con promedio igual o superior a 3.0.
+## Clonar y ejecutar
 
-## Tecnologías
+Clona el repositorio y entra a la carpeta:
 
-- HTML y CSS para la estructura y presentación.
-- JavaScript para eventos, validaciones y manipulación del DOM.
-- Variables, funciones tradicionales, arreglos, objetos, condicionales y ciclos `for`.
-- `localStorage` para conservar datos en el navegador.
-
-## Estructura
-
-```text
-Proyecto-M2/
-├── index.html       # Inicio, notas y contacto
-├── login.html       # Inicio de sesión
-├── registro.html    # Registro de cuenta
-├── css/styles.css   # Estilos compartidos
-├── img/             # Recursos gráficos
-└── js/
-    ├── app.js       # Navegación y gestión de notas
-    ├── login.js     # Inicio de sesión
-    └── registro.js  # Registro de cuenta
+```bash
+git clone https://github.com/juanda4345/Proyecto-Integrador-M3.git
+cd Proyecto-Integrador-M3
 ```
 
-## Ejecución
+Inicia un servidor web local desde la raíz del proyecto. En Windows, usa:
 
-Abre la carpeta en Visual Studio Code, inicia Live Server y visita `login.html`. También puedes ingresar con la cuenta de demostración:
+```powershell
+py -m http.server 8000
+```
+
+En macOS o Linux, usa:
+
+```bash
+python3 -m http.server 8000
+```
+
+Deja esa terminal abierta y visita [http://localhost:8000/login.html](http://localhost:8000/login.html). Para detener el servidor, vuelve a la terminal y presiona `Ctrl+C`.
+
+También puedes abrir la carpeta clonada en Visual Studio Code, iniciar Live Server desde `login.html` y usar la dirección local que muestre la extensión. No abras las páginas con `file://`: el navegador puede bloquear la solicitud `fetch()` que carga los datos.
+
+## Cuenta de demostración
 
 - Usuario: `admin`
 - Contraseña: `1234`
 
-## Alcance de los datos
+También puedes crear una cuenta desde la página de registro.
 
-Esta versión es una demostración de FrontEnd: no tiene servidor conectado y los datos solo se guardan en el navegador utilizado. No ingreses información personal real.
+## Datos y funcionamiento
 
+- `notas.json` contiene los ocho registros de calificaciones iniciales.
+- Al entrar a la aplicación, `js/app.js` carga ese archivo con `fetch()` y muestra las notas, el promedio y el resumen en la página.
+- Los cambios hechos con el CRUD se guardan en `localStorage` del navegador. Cuando existe una lista guardada, esta se usa en lugar de volver a importar los datos iniciales.
+- Las cuentas también se guardan en `localStorage`. Los datos no se comparten entre navegadores ni dispositivos y se pueden borrar al limpiar los datos del sitio.
+- Para volver a cargar las notas originales durante el desarrollo, borra la clave `esd_notas` del almacenamiento local del sitio y recarga la página.
+
+Esta aplicación es una demostración FrontEnd, no un sistema de autenticación seguro. No uses contraseñas ni información personal real.
+
+## Estructura del proyecto
+
+```text
+Proyecto-Integrador-M3/
+├── index.html       # Inicio, resumen, notas y contacto
+├── login.html       # Inicio de sesión
+├── registro.html    # Registro de cuenta
+├── notas.json       # Datos iniciales para fetch()
+├── css/
+│   └── styles.css   # Estilos compartidos
+├── img/
+│   └── logo-esd.png # Logo de la aplicación
+└── js/
+    ├── app.js       # Navegación y CRUD de notas
+    ├── login.js     # Validación del inicio de sesión
+    └── registro.js  # Registro de cuentas
+```

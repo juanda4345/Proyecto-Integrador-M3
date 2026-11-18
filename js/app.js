@@ -1,29 +1,30 @@
 "use strict";
 
 var claveNotas = "esd_notas";
-var notasIniciales = [
-  { id: 1, estudiante: "Santiago Gómez", materia: "Frontend", nota1: 4.3, nota2: 4.5, nota3: 4.4 },
-  { id: 2, estudiante: "Valentina Rodríguez", materia: "Backend", nota1: 4.6, nota2: 4.4, nota3: 4.8 },
-  { id: 3, estudiante: "Mateo Fernández", materia: "Lógica de programación", nota1: 2.8, nota2: 3.0, nota3: 2.9 },
-  { id: 4, estudiante: "Sofía Martínez", materia: "Metodologías ágiles", nota1: 3.9, nota2: 4.1, nota3: 4.0 },
-  { id: 5, estudiante: "Lucas Pérez", materia: "Base de datos", nota1: 2.5, nota2: 2.7, nota3: 2.8 },
-  { id: 6, estudiante: "Isabella Silva", materia: "Base de datos", nota1: 4.4, nota2: 4.6, nota3: 4.5 },
-  { id: 7, estudiante: "Thiago Díaz", materia: "Frontend", nota1: 3.6, nota2: 3.8, nota3: 3.5 },
-  { id: 8, estudiante: "Camila Castro", materia: "Backend", nota1: 4.8, nota2: 4.9, nota3: 4.6 }
-];
-var notas = cargarNotas();
+var notas = [];
 var formularioNota = document.querySelector("#formularioNota");
 
-function cargarNotas() {
-  var datosGuardados = localStorage.getItem(claveNotas);
-  if (datosGuardados === null) return notasIniciales;
+async function cargarNotasIniciales() {
   try {
-    var notasGuardadas = JSON.parse(datosGuardados);
-    if (notasGuardadas instanceof Array) return notasGuardadas;
+    var respuesta = await fetch("notas.json");
+    if (!respuesta.ok) throw new Error("No fue posible cargar notas.json");
+    var datosIniciales = await respuesta.json();
+    if (!(datosIniciales instanceof Array)) throw new Error("El archivo notas.json no contiene una lista de notas");
+
+    var datosGuardados = localStorage.getItem(claveNotas);
+    if (datosGuardados !== null) {
+      try {
+        var notasGuardadas = JSON.parse(datosGuardados);
+        if (notasGuardadas instanceof Array) return notasGuardadas;
+      } catch (error) {
+        // Si el almacenamiento local está dañado, se usan los datos del archivo JSON.
+      }
+    }
+    return datosIniciales;
   } catch (error) {
-    return notasIniciales;
+    document.querySelector("#mensajeNota").textContent = "No fue posible cargar las notas iniciales. Comprueba que la aplicación se ejecute desde un servidor local.";
+    return [];
   }
-  return notasIniciales;
 }
 
 function guardarNotas() {
@@ -130,6 +131,11 @@ function actualizarPagina() {
   mostrarNotas();
   mostrarNotasRecientes();
   actualizarResumen();
+}
+
+async function iniciarAplicacion() {
+  notas = await cargarNotasIniciales();
+  actualizarPagina();
 }
 
 function limpiarFormulario() {
@@ -239,5 +245,5 @@ if (usuarioActual === null) {
 } else {
   document.querySelector("#nombreUsuario").textContent = usuarioActual;
   document.querySelector("#saludoUsuario").textContent = usuarioActual;
-  actualizarPagina();
+  iniciarAplicacion();
 }
