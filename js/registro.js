@@ -1,12 +1,12 @@
 "use strict";
 
-var formularioRegistro = document.querySelector("#formularioRegistro");
+const formularioRegistro = document.querySelector("#formularioRegistro");
 
 function cargarUsuarios() {
   try {
-    var datosUsuarios = localStorage.getItem("esd_usuarios");
+    const datosUsuarios = localStorage.getItem("esd_usuarios");
     if (datosUsuarios === null) return [];
-    var usuariosGuardados = JSON.parse(datosUsuarios);
+    const usuariosGuardados = JSON.parse(datosUsuarios);
     if (usuariosGuardados instanceof Array) return usuariosGuardados;
   } catch (error) {
     return [];
@@ -16,11 +16,11 @@ function cargarUsuarios() {
 
 function registrarUsuario(evento) {
   evento.preventDefault();
-  var nombre = document.querySelector("#nombre").value.trim();
-  var usuario = document.querySelector("#usuarioRegistro").value.trim();
-  var contrasena = document.querySelector("#contrasenaRegistro").value;
-  var confirmarContrasena = document.querySelector("#confirmarContrasena").value;
-  var mensaje = document.querySelector("#mensajeRegistro");
+  const nombre = document.querySelector("#nombre").value.trim();
+  const usuario = document.querySelector("#usuarioRegistro").value.trim();
+  const contrasena = document.querySelector("#contrasenaRegistro").value;
+  const confirmarContrasena = document.querySelector("#confirmarContrasena").value;
+  const mensaje = document.querySelector("#mensajeRegistro");
   mensaje.textContent = "";
 
   if (!nombre || !usuario || !contrasena || !confirmarContrasena) {
@@ -36,9 +36,9 @@ function registrarUsuario(evento) {
     return;
   }
 
-  var usuarios = cargarUsuarios();
-  for (var i = 0; i < usuarios.length; i++) {
-    var usuarioGuardado = usuarios[i].usuario || usuarios[i].username;
+  const usuarios = cargarUsuarios();
+  for (let i = 0; i < usuarios.length; i++) {
+    const usuarioGuardado = usuarios[i].usuario || usuarios[i].username;
     if (usuarioGuardado && usuarioGuardado.toLowerCase() === usuario.toLowerCase()) {
       mensaje.textContent = "Ese usuario ya está registrado.";
       return;

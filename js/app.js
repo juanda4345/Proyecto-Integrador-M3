@@ -1,23 +1,23 @@
 "use strict";
 
-var claveNotas = "esd_notas";
-var notas = [];
-var formularioNota = document.querySelector("#formularioNota");
+const claveNotas = "esd_notas";
+let notas = [];
+const formularioNota = document.querySelector("#formularioNota");
 
 async function cargarNotasIniciales() {
   try {
-    var respuesta = await fetch("notas.json");
+    const respuesta = await fetch("notas.json");
     if (!respuesta.ok) throw new Error("No fue posible cargar notas.json");
-    var datosIniciales = await respuesta.json();
+    const datosIniciales = await respuesta.json();
     if (!(datosIniciales instanceof Array)) throw new Error("El archivo notas.json no contiene una lista de notas");
 
-    var datosGuardados = localStorage.getItem(claveNotas);
+    const datosGuardados = localStorage.getItem(claveNotas);
     if (datosGuardados !== null) {
       try {
-        var notasGuardadas = JSON.parse(datosGuardados);
+        const notasGuardadas = JSON.parse(datosGuardados);
         if (notasGuardadas instanceof Array) return notasGuardadas;
       } catch (error) {
-        // Si el almacenamiento local está dañado, se usan los datos del archivo JSON.
+        return datosIniciales;
       }
     }
     return datosIniciales;
@@ -42,15 +42,15 @@ function calcularPromedio(nota) {
 }
 
 function crearCelda(fila, texto) {
-  var celda = document.createElement("td");
+  const celda = document.createElement("td");
   celda.textContent = texto;
   fila.appendChild(celda);
   return celda;
 }
 
 function crearFilaNota(nota, posicion, mostrarAcciones) {
-  var fila = document.createElement("tr");
-  var promedio = calcularPromedio(nota);
+  const fila = document.createElement("tr");
+  const promedio = calcularPromedio(nota);
   if (mostrarAcciones) crearCelda(fila, posicion + 1);
   crearCelda(fila, nota.estudiante);
   crearCelda(fila, nota.materia);
@@ -63,15 +63,15 @@ function crearFilaNota(nota, posicion, mostrarAcciones) {
   crearCelda(fila, promedio >= 3 ? "Aprobado" : "Reprobado");
 
   if (mostrarAcciones) {
-    var celdaAcciones = crearCelda(fila, "");
+    const celdaAcciones = crearCelda(fila, "");
     celdaAcciones.className = "acciones";
-    var botonEditar = document.createElement("button");
+    const botonEditar = document.createElement("button");
     botonEditar.type = "button";
     botonEditar.className = "boton-editar";
     botonEditar.textContent = "Editar";
     botonEditar.setAttribute("data-id", nota.id);
     botonEditar.addEventListener("click", editarNota);
-    var botonEliminar = document.createElement("button");
+    const botonEliminar = document.createElement("button");
     botonEliminar.type = "button";
     botonEliminar.className = "boton-eliminar";
     botonEliminar.textContent = "Eliminar";
@@ -84,13 +84,13 @@ function crearFilaNota(nota, posicion, mostrarAcciones) {
 }
 
 function mostrarNotas() {
-  var tabla = document.querySelector("#tablaNotas");
-  var busqueda = document.querySelector("#busqueda").value.toLowerCase().trim();
-  var cantidad = 0;
+  const tabla = document.querySelector("#tablaNotas");
+  const busqueda = document.querySelector("#busqueda").value.toLowerCase().trim();
+  let cantidad = 0;
   tabla.innerHTML = "";
-  for (var i = 0; i < notas.length; i++) {
-    var estudiante = notas[i].estudiante.toLowerCase();
-    var materia = notas[i].materia.toLowerCase();
+  for (let i = 0; i < notas.length; i++) {
+    const estudiante = notas[i].estudiante.toLowerCase();
+    const materia = notas[i].materia.toLowerCase();
     if (estudiante.indexOf(busqueda) !== -1 || materia.indexOf(busqueda) !== -1) {
       tabla.appendChild(crearFilaNota(notas[i], cantidad, true));
       cantidad++;
@@ -105,20 +105,20 @@ function mostrarNotas() {
 }
 
 function mostrarNotasRecientes() {
-  var tabla = document.querySelector("#tablaRecientes");
-  var inicio = notas.length - 4;
+  const tabla = document.querySelector("#tablaRecientes");
+  let inicio = notas.length - 4;
   if (inicio < 0) inicio = 0;
   tabla.innerHTML = "";
-  for (var i = notas.length - 1; i >= inicio; i--) {
+  for (let i = notas.length - 1; i >= inicio; i--) {
     tabla.appendChild(crearFilaNota(notas[i], 0, false));
   }
 }
 
 function actualizarResumen() {
-  var sumaPromedios = 0;
-  var cantidadAprobados = 0;
-  for (var i = 0; i < notas.length; i++) {
-    var promedio = calcularPromedio(notas[i]);
+  let sumaPromedios = 0;
+  let cantidadAprobados = 0;
+  for (let i = 0; i < notas.length; i++) {
+    const promedio = calcularPromedio(notas[i]);
     sumaPromedios += promedio;
     if (promedio >= 3) cantidadAprobados++;
   }
@@ -148,8 +148,8 @@ function limpiarFormulario() {
 }
 
 function editarNota(evento) {
-  var idBuscado = Number(evento.currentTarget.getAttribute("data-id"));
-  for (var i = 0; i < notas.length; i++) {
+  const idBuscado = Number(evento.currentTarget.getAttribute("data-id"));
+  for (let i = 0; i < notas.length; i++) {
     if (notas[i].id === idBuscado) {
       document.querySelector("#idNota").value = notas[i].id;
       document.querySelector("#estudiante").value = notas[i].estudiante;
@@ -166,9 +166,9 @@ function editarNota(evento) {
 }
 
 function eliminarNota(evento) {
-  var idBuscado = Number(evento.currentTarget.getAttribute("data-id"));
+  const idBuscado = Number(evento.currentTarget.getAttribute("data-id"));
   if (!window.confirm("¿Deseas eliminar este registro?")) return;
-  for (var i = 0; i < notas.length; i++) {
+  for (let i = 0; i < notas.length; i++) {
     if (notas[i].id === idBuscado) {
       notas.splice(i, 1);
       break;
@@ -180,17 +180,17 @@ function eliminarNota(evento) {
 function guardarNota(evento) {
   evento.preventDefault();
   document.querySelector("#mensajeNota").textContent = "";
-  var idActual = document.querySelector("#idNota").value;
-  var estudiante = document.querySelector("#estudiante").value.trim();
-  var materia = document.querySelector("#materia").value.trim();
-  var nota1 = Number(document.querySelector("#nota1").value);
-  var nota2 = Number(document.querySelector("#nota2").value);
-  var nota3 = Number(document.querySelector("#nota3").value);
+  const idActual = document.querySelector("#idNota").value;
+  const estudiante = document.querySelector("#estudiante").value.trim();
+  const materia = document.querySelector("#materia").value.trim();
+  const nota1 = Number(document.querySelector("#nota1").value);
+  const nota2 = Number(document.querySelector("#nota2").value);
+  const nota3 = Number(document.querySelector("#nota3").value);
   if (!estudiante || !materia || nota1 < 1 || nota1 > 5 || nota2 < 1 || nota2 > 5 || nota3 < 1 || nota3 > 5) {
     document.querySelector("#mensajeNota").textContent = "Completa los campos y verifica que cada nota esté entre 1.0 y 5.0.";
     return;
   }
-  var notaNueva = {
+  const notaNueva = {
     id: idActual === "" ? new Date().getTime() : Number(idActual),
     estudiante: estudiante,
     materia: materia,
@@ -198,8 +198,8 @@ function guardarNota(evento) {
     nota2: nota2,
     nota3: nota3
   };
-  var encontrada = false;
-  for (var i = 0; i < notas.length; i++) {
+  let encontrada = false;
+  for (let i = 0; i < notas.length; i++) {
     if (notas[i].id === notaNueva.id) {
       notas[i] = notaNueva;
       encontrada = true;
@@ -214,14 +214,14 @@ function guardarNota(evento) {
 }
 
 function cambiarPagina(evento) {
-  var nombrePagina = evento.currentTarget.getAttribute("data-pagina");
-  var paginas = document.querySelectorAll(".pagina");
-  for (var i = 0; i < paginas.length; i++) paginas[i].classList.add("oculto");
-  var idPagina = "#pagina" + nombrePagina.charAt(0).toUpperCase() + nombrePagina.slice(1);
-  var paginaSeleccionada = document.querySelector(idPagina);
+  const nombrePagina = evento.currentTarget.getAttribute("data-pagina");
+  const paginas = document.querySelectorAll(".pagina");
+  for (let i = 0; i < paginas.length; i++) paginas[i].classList.add("oculto");
+  const idPagina = "#pagina" + nombrePagina.charAt(0).toUpperCase() + nombrePagina.slice(1);
+  const paginaSeleccionada = document.querySelector(idPagina);
   if (paginaSeleccionada) paginaSeleccionada.classList.remove("oculto");
-  var botonesMenu = document.querySelectorAll(".boton-menu");
-  for (var j = 0; j < botonesMenu.length; j++) {
+  const botonesMenu = document.querySelectorAll(".boton-menu");
+  for (let j = 0; j < botonesMenu.length; j++) {
     botonesMenu[j].classList.remove("activo");
     if (botonesMenu[j].getAttribute("data-pagina") === nombrePagina) botonesMenu[j].classList.add("activo");
   }
@@ -236,10 +236,10 @@ formularioNota.addEventListener("submit", guardarNota);
 document.querySelector("#botonCancelar").addEventListener("click", limpiarFormulario);
 document.querySelector("#busqueda").addEventListener("input", mostrarNotas);
 document.querySelector("#botonCerrarSesion").addEventListener("click", cerrarSesion);
-var enlacesPagina = document.querySelectorAll("[data-pagina]");
-for (var i = 0; i < enlacesPagina.length; i++) enlacesPagina[i].addEventListener("click", cambiarPagina);
+const enlacesPagina = document.querySelectorAll("[data-pagina]");
+for (let i = 0; i < enlacesPagina.length; i++) enlacesPagina[i].addEventListener("click", cambiarPagina);
 
-var usuarioActual = localStorage.getItem("esd_usuario");
+const usuarioActual = localStorage.getItem("esd_usuario");
 if (usuarioActual === null) {
   window.location.replace("login.html");
 } else {
