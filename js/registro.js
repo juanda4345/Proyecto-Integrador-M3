@@ -55,3 +55,5 @@ function registrarUsuario(evento) {
 }
 
 formularioRegistro.addEventListener("submit", registrarUsuario);
+
+
